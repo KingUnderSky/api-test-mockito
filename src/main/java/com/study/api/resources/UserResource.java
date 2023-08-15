@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.study.api.domain.User;
+import com.study.api.domain.dto.UserDTO;
 import com.study.api.services.UserService;
 
 @RestController
@@ -18,9 +19,11 @@ public class UserResource {
     private UserService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Integer id) {
+    public ResponseEntity<UserDTO> findById(@PathVariable Integer id) {
 
-        return ResponseEntity.ok().body(service.findById(id));
+        User user = service.findById(id);
+        UserDTO dto = new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPassword());
+        return ResponseEntity.ok().body(dto);
     }
     
 }
