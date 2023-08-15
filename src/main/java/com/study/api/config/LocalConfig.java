@@ -15,7 +15,7 @@ import com.study.api.repositories.UserRepository;
 public class LocalConfig {
 
     @Bean
-    public CommandLineRunner  startDB(UserRepository repository) {
+    public CommandLineRunner startDB(UserRepository repository) {
         return args -> {
             User u1 = new User(null, "Ettore", "ettorerollo@hotmail.com", "123");
             User u2 = new User(null, "Luiz", "luizvicios123@hotmail.com", "123");
