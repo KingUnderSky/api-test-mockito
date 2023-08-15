@@ -10,6 +10,7 @@ import com.study.api.domain.User;
 import com.study.api.domain.dto.UserDTO;
 import com.study.api.repositories.UserRepository;
 import com.study.api.services.UserService;
+import com.study.api.services.exceptions.DataIntegratyViolationException;
 import com.study.api.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -32,9 +33,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserDTO dto) {
-
+        findByEmail(dto);
         User user = new User(null, dto.getName(), dto.getEmail(), dto.getPassword());
 
         return repository.save(user);
+    }
+
+    private void findByEmail(UserDTO obj) {
+        Optional<User> user = repository.findByEmail(obj.getEmail());
+
+        if(user.isPresent()) {
+            throw new DataIntegratyViolationException("E-mail já cadastrado no sistema.");
+        }
     }
 }
