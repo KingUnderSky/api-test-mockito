@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,11 @@ import com.study.api.services.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
 public class UserServiceImplTest {
+
+    /**
+     *
+     */
+    private static final int INDEX = 0;
 
     /**
      * VARIÁVEL ID PARA INICIAR OS OBJETOS
@@ -74,8 +80,18 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void testFindAll() {
+    void whenFindAllThenReturnAListOfUsers() {
+        when(repository.findAll()).thenReturn(List.of(user));
 
+        List<User> response = service.findAll();
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(User.class, response.get(INDEX).getClass());
+        assertEquals(ID, response.get(INDEX).getId());
+        assertEquals(NAME, response.get(INDEX).getName());
+        assertEquals(EMAIL, response.get(INDEX).getEmail());
+        assertEquals(PASSWORD, response.get(INDEX).getPassword());
     }
 
     @Test
