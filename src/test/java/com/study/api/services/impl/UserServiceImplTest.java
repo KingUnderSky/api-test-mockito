@@ -116,6 +116,18 @@ public class UserServiceImplTest {
     }
 
     @Test
+    void deleteWithObjectNotFoundException() {
+        when(repository.findById(anyInt()))
+            .thenThrow(new ObjectNotFoundException(USUÁRIO_NAO_ENCONTRADO));
+        try {
+            service.deleteUser(ID);
+        } catch (Exception ex) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals(USUÁRIO_NAO_ENCONTRADO, ex.getMessage());
+        }
+    }
+
+    @Test
     void whenFindAllThenReturnAListOfUsers() {
         when(repository.findAll()).thenReturn(List.of(user));
 
