@@ -54,12 +54,12 @@ public class UserServiceImplTest {
     /**
      * Mensagem de usuário não encontrado
      */
-    private static final String USUÁRIO_NÃO_ENCONTRADO = "Usuário não encontrado.";
+    private static final String USUÁRIO_NAO_ENCONTRADO = "Usuário não encontrado.";
 
     /**
      * Mensagem de email não encontrado
      */
-    private static final String EMAIL_NÃO_ENCONTRADO = "E-mail já cadastrado no sistema.";
+    private static final String EMAIL_NAO_ENCONTRADO = "E-mail já cadastrado no sistema.";
 
     @InjectMocks
     private UserServiceImpl service;
@@ -100,7 +100,7 @@ public class UserServiceImplTest {
             service.createUser(userDTO);
         } catch (Exception ex) {
             assertEquals(DataIntegratyViolationException.class, ex.getClass());
-            assertEquals(EMAIL_NÃO_ENCONTRADO, ex.getMessage());
+            assertEquals(EMAIL_NAO_ENCONTRADO, ex.getMessage());
         }
     }
 
@@ -140,13 +140,13 @@ public class UserServiceImplTest {
 
     @Test
     void whenFindByIdThenReturnAnObjectNotFoundException() {
-        when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException(USUÁRIO_NÃO_ENCONTRADO));
+        when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException(USUÁRIO_NAO_ENCONTRADO));
 
         try {
             service.findById(ID);
         } catch (Exception ex) {
             assertEquals(ObjectNotFoundException.class, ex.getClass());
-            assertEquals(USUÁRIO_NÃO_ENCONTRADO, ex.getMessage());
+            assertEquals(USUÁRIO_NAO_ENCONTRADO, ex.getMessage());
         }
     }
 
@@ -162,6 +162,19 @@ public class UserServiceImplTest {
         assertEquals(NAME, response.getName());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(PASSWORD, response.getPassword());
+    }
+
+    @Test
+    void whenUpdateThenReturnADataIntegrityViolationException() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalUser);
+
+        try {
+            optionalUser.get().setId(2);
+            service.updateUser(userDTO);
+        } catch (Exception ex) {
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(EMAIL_NAO_ENCONTRADO, ex.getMessage());
+        }
     }
 
     private void startUser() {
