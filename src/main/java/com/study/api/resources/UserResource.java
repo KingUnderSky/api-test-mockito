@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,24 +24,29 @@ import com.study.api.services.UserService;
 @RequestMapping(value = "/user")
 public class UserResource {
 
+    /**
+     * Path variable para ID
+     */
+    private static final String ID = "/{id}";
+
     @Autowired
     private UserService service;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Integer id) {
+    @GetMapping(value = ID)
+    public ResponseEntity<UserDTO> findById(@PathVariable final Integer id) {
 
-        User user = service.findById(id);
-        UserDTO dto = new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPassword());
+        final User user = service.findById(id);
+        final UserDTO dto = new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPassword());
         return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
 
-        List<UserDTO> listDtos = new ArrayList<>();
+        final List<UserDTO> listDtos = new ArrayList<>();
 
         service.findAll().forEach(u -> {
-            UserDTO dto = new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getPassword());
+            final UserDTO dto = new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getPassword());
             listDtos.add(dto);
         });
 
@@ -48,20 +54,27 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO obj) {
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+    public ResponseEntity<UserDTO> create(@RequestBody final UserDTO obj) {
+        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(ID)
                 .buildAndExpand(service.createUser(obj).getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO obj) {
+    @PutMapping(value = ID)
+    public ResponseEntity<UserDTO> update(@PathVariable final Integer id, @RequestBody final UserDTO obj) {
         obj.setId(id);
 
-        User newObj = service.updateUser(obj);
+        final User newObj = service.updateUser(obj);
 
         return ResponseEntity.ok()
                 .body(new UserDTO(newObj.getId(), newObj.getName(), newObj.getEmail(), newObj.getPassword()));
+    }
+
+    @DeleteMapping(value = ID)
+    public ResponseEntity<UserDTO> delete(@PathVariable final Integer id) {
+        service.deleteUser(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

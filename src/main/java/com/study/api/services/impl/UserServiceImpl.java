@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     public User findById(Integer id) {
         Optional<User> obj = repository.findById(id);
 
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado."));
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
     }
 
     @Override
@@ -45,6 +45,13 @@ public class UserServiceImpl implements UserService {
         User user = new User(dto.getId(), dto.getName(), dto.getEmail(), dto.getPassword());
 
         return repository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        findById(id);
+
+        repository.deleteById(id);
     }
 
     private void findByEmail(UserDTO obj) {
