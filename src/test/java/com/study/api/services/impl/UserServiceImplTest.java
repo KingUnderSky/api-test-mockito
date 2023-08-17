@@ -56,6 +56,11 @@ public class UserServiceImplTest {
      */
     private static final String USUÁRIO_NÃO_ENCONTRADO = "Usuário não encontrado.";
 
+    /**
+     * Mensagem de email não encontrado
+     */
+    private static final String EMAIL_NÃO_ENCONTRADO = "E-mail já cadastrado no sistema.";
+
     @InjectMocks
     private UserServiceImpl service;
 
@@ -95,7 +100,7 @@ public class UserServiceImplTest {
             service.createUser(userDTO);
         } catch (Exception ex) {
             assertEquals(DataIntegratyViolationException.class, ex.getClass());
-            assertEquals("E-mail já cadastrado no sistema.", ex.getMessage());
+            assertEquals(EMAIL_NÃO_ENCONTRADO, ex.getMessage());
         }
     }
 
@@ -146,8 +151,17 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void testUpdateUser() {
+    void whenUpdateThenReturnSuccess() {
+        when(repository.save(any())).thenReturn(user);
 
+        User response = service.updateUser(userDTO);
+
+        assertNotNull(response);
+        assertEquals(User.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(EMAIL, response.getEmail());
+        assertEquals(PASSWORD, response.getPassword());
     }
 
     private void startUser() {
