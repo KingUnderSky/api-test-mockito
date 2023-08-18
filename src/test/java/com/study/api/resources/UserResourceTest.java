@@ -53,16 +53,6 @@ public class UserResourceTest {
      */
     private static final String PASSWORD = "123";
 
-    /**
-     * Mensagem de usuário não encontrado
-     */
-    private static final String USUÁRIO_NAO_ENCONTRADO = "Usuário não encontrado.";
-
-    /**
-     * Mensagem de email não encontrado
-     */
-    private static final String EMAIL_NAO_ENCONTRADO = "E-mail já cadastrado no sistema.";
-
     private User user;
     private UserDTO userDTO;
 
