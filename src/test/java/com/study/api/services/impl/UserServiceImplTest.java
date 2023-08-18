@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.study.api.domain.User;
 import com.study.api.domain.dto.UserDTO;
 import com.study.api.repositories.UserRepository;
-import com.study.api.services.exceptions.DataIntegratyViolationException;
+import com.study.api.services.exceptions.DataIntegrityViolationException;
 import com.study.api.services.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
@@ -102,7 +102,7 @@ public class UserServiceImplTest {
             optionalUser.get().setId(2);
             service.createUser(userDTO);
         } catch (Exception ex) {
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(EMAIL_NAO_ENCONTRADO, ex.getMessage());
         }
     }
@@ -190,7 +190,7 @@ public class UserServiceImplTest {
             optionalUser.get().setId(2);
             service.updateUser(userDTO);
         } catch (Exception ex) {
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(EMAIL_NAO_ENCONTRADO, ex.getMessage());
         }
     }

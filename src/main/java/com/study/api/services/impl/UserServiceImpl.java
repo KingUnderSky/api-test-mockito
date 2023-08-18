@@ -10,7 +10,7 @@ import com.study.api.domain.User;
 import com.study.api.domain.dto.UserDTO;
 import com.study.api.repositories.UserRepository;
 import com.study.api.services.UserService;
-import com.study.api.services.exceptions.DataIntegratyViolationException;
+import com.study.api.services.exceptions.DataIntegrityViolationException;
 import com.study.api.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = repository.findByEmail(obj.getEmail());
 
         if (user.isPresent() && !user.get().getId().equals(obj.getId())) {
-            throw new DataIntegratyViolationException("E-mail já cadastrado no sistema.");
+            throw new DataIntegrityViolationException("E-mail já cadastrado no sistema.");
         }
     }
 }
