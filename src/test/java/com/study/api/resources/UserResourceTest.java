@@ -103,14 +103,15 @@ public class UserResourceTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
-        assertEquals(ArrayList.class, response.getBody().getClass());
-        assertEquals(UserDTO.class, response.getBody().get(INDEX).getClass());
 
-        assertEquals(ID, response.getBody().get(INDEX).getId());
-        assertEquals(NAME, response.getBody().get(INDEX).getName());
-        assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
-        assertEquals(PASSWORD, response.getBody().get(INDEX).getPassword());
-
+        if (response.getBody() != null) {
+            assertEquals(ArrayList.class, response.getBody().getClass());
+            assertEquals(UserDTO.class, response.getBody().get(INDEX).getClass());
+            assertEquals(ID, response.getBody().get(INDEX).getId());
+            assertEquals(NAME, response.getBody().get(INDEX).getName());
+            assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
+            assertEquals(PASSWORD, response.getBody().get(INDEX).getPassword());
+        }
     }
 
     @Test
@@ -122,12 +123,14 @@ public class UserResourceTest {
         assertNotNull(response);
         assertNotNull(response.getBody());
         assertEquals(ResponseEntity.class, response.getClass());
-        assertEquals(UserDTO.class, response.getBody().getClass());
 
-        assertEquals(ID, response.getBody().getId());
-        assertEquals(NAME, response.getBody().getName());
-        assertEquals(EMAIL, response.getBody().getEmail());
-        assertEquals(PASSWORD, response.getBody().getPassword());
+        if (response.getBody() != null) {
+            assertEquals(UserDTO.class, response.getBody().getClass());
+            assertEquals(ID, response.getBody().getId());
+            assertEquals(NAME, response.getBody().getName());
+            assertEquals(EMAIL, response.getBody().getEmail());
+            assertEquals(PASSWORD, response.getBody().getPassword());
+        }
     }
 
     @Test
@@ -140,10 +143,13 @@ public class UserResourceTest {
         assertNotNull(response.getBody());
         assertEquals(ResponseEntity.class, response.getClass());
         
-        assertEquals(ID, response.getBody().getId());
-        assertEquals(NAME, response.getBody().getName());
-        assertEquals(EMAIL, response.getBody().getEmail());
+        if (response.getBody() != null) {
+            assertEquals(ID, response.getBody().getId());
+            assertEquals(NAME, response.getBody().getName());
+            assertEquals(EMAIL, response.getBody().getEmail());
+        }
     }
+
     private void startUser() {
         user = new User(ID, NAME, EMAIL, PASSWORD);
         userDTO = new UserDTO(ID, NAME, EMAIL, PASSWORD);
